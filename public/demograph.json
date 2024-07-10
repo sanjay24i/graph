@@ -1,0 +1,78 @@
+{
+  "Start": "SIdle",
+  "Mop": [
+    {
+      "1:OoS": {
+        "step_tag": "Aqtk1_OoS",
+        "Transitions": [
+          {
+            "Origin": "Aqtk1_OoS",
+            "Destination": "",
+            "Transition_from_to": "Aqtk1_OoS_wait"
+          }
+        ]
+      }
+    },
+    {
+      "2:InS": {
+        "step_tag": "Aqtk1_InS",
+        "Transitions": [
+          {
+            "Origin": "Aqtk1_InS",
+            "Destination": "Aqtk1_Run",
+            "Transition_from_to": "Aqtk1_InS_Run"
+          },
+          {
+            "Origin": "Aqtk1_InS",
+            "Destination": "",
+            "Transition_from_to": "Aqtk1_InS_wait"
+          }
+        ]
+      }
+    },
+    {
+      "3:Run": {
+        "step_tag": "Aqtk1_Run",
+        "Transitions": [
+          {
+            "Origin": "Aqtk1_Run",
+            "Destination": "Aqtk1_Run2",
+            "Transition_from_to": "Aqtk1_Run_Run2"
+          },
+          {
+            "Origin": "Aqtk1_Run2",
+            "Destination": "Aqtk1_Run3",
+            "Transition_from_to": "Aqtk1_Run2_Run3"
+          },
+          {
+            "Origin": "Aqtk1_Run2",
+            "Destination": "Aqtk1_InS",
+            "Transition_from_to": "Aqtk1_Run2_InS"
+          },
+          {
+            "Origin": "Aqtk1_Run3",
+            "Destination": "Aqtk1_Run4",
+            "Transition_from_to": "Aqtk1_Run3_Run4"
+          },
+          {
+            "Origin": "Aqtk1_Run4",
+            "Destination": "",
+            "Transition_from_to": "Aqtk1_Run4_wait"
+          }
+        ]
+      }
+    },
+    {
+      "4:Run45": {
+        "step_tag": "Aqtk1_Run45",
+        "Transitions": [
+          {
+            "Origin": "Aqtk1_Run45",
+            "Destination": "",
+            "Transition_from_to": "Aqtk1_Run45_wait"
+          }
+        ]
+      }
+    }
+  ]
+}
