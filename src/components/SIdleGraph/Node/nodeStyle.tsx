@@ -6,8 +6,8 @@ export const getNodeStyle = (
   color = Fill.LIGHT_GRAY
 ) => {
   return new ShapeNodeStyle({
-    shape: shape || ShapeNodeShape.ROUND_RECTANGLE,
+    shape: shape,
     stroke: Stroke.BLACK,
-    fill: color || Fill.LIGHT_GRAY,
+    fill: color,
   });
 };

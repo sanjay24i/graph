@@ -2,13 +2,12 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   GraphComponent,
   GraphEditorInputMode,
-  IGraph,
   INode,
   Point,
   License,
 } from "yfiles";
-import Node from "./Node/Node";
-import Edge from "./Edge/Edge";
+import Node from "../SIdleGraph/Node/Node";
+import Edge from "../SIdleGraph/Edge/Edge";
 import licenseData from "../../license.json";
 
 License.value = licenseData;

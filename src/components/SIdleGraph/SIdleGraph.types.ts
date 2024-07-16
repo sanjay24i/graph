@@ -1,4 +1,6 @@
+import { MopProps } from "./MopStack.types";
+
 export type GraphDataType = {
     Start: string,
-    Mop: JSX.Element[],
+    Mop: Record<string, MopProps>[],
   }

@@ -1,22 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { IGraph, INode, Point, Rect, ShapeNodeStyle } from "yfiles";
-import Node from "./Node/Node"; // Your existing Node component
-import TransitionNode from "./Node/TransitionNode"; // Your existing TransitionNode component
+import { INode, Point, Rect, ShapeNodeStyle } from "yfiles";
+import NodeFactory from "./Node/NodeFactory"; // Import the NodeFactory component
 import { commonEdgeStyle } from "./Edge/edgeStyles";
+import { MopStackProps } from "./MopStack.types";
 
-interface MopStackProps {
-  graph: IGraph;
-  data: Record<string, any>;
-  onNodeCreated: (node: INode, id: string) => void;
-  xPos: number;
-}
-
-const MopStack: React.FC<MopStackProps> = ({
-  graph,
-  data,
-  onNodeCreated,
-  xPos,
-}) => {
+const MopStack = ({ graph, data, onNodeCreated, xPos }: MopStackProps) => {
   const nodeRefs = useRef<{ [key: string]: INode }>({});
   const stackXPos = xPos || 100;
 
@@ -25,11 +13,12 @@ const MopStack: React.FC<MopStackProps> = ({
     onNodeCreated(node, id);
   };
 
+  console.log("data...data", data);
+
   useEffect(() => {
     const nodeIds = Object.keys(data);
     if (nodeIds.length === 0) return;
 
-    const stepTag = data[nodeIds[0]].step_tag;
     const transitions = data[nodeIds[0]].Transitions;
 
     const node1 = nodeRefs.current[nodeIds[0]];
@@ -56,7 +45,7 @@ const MopStack: React.FC<MopStackProps> = ({
       });
 
       // Connect transition nodes
-      transitions.forEach((transition, index) => {
+      transitions.forEach((_, index: number) => {
         const transitionNode =
           nodeRefs.current[`${nodeIds[0]}-transition-${index}`];
         if (transitionNode) {
@@ -101,13 +90,14 @@ const MopStack: React.FC<MopStackProps> = ({
 
   return (
     <>
-      {Object.keys(data).map((key, index) => {
+      {Object.keys(data).map((key) => {
         const stepTag = data[key].step_tag;
         const transitions = data[key].Transitions;
 
         return (
           <React.Fragment key={key}>
-            <TransitionNode
+            <NodeFactory
+              type="transition"
               graph={graph}
               id={key}
               isVisible={true}
@@ -116,7 +106,8 @@ const MopStack: React.FC<MopStackProps> = ({
               onNodeCreated={handleNodeCreated}
             />
             {stepTag && (
-              <Node
+              <NodeFactory
+                type="default"
                 graph={graph}
                 id={`${key}-step`}
                 isVisible={true}
@@ -125,9 +116,10 @@ const MopStack: React.FC<MopStackProps> = ({
                 onNodeCreated={handleNodeCreated}
               />
             )}
-            {transitions.map((transition, idx) => (
-              <TransitionNode
+            {transitions.map((transition, idx: number) => (
+              <NodeFactory
                 key={`${key}-transition-${idx}`}
+                type="transition"
                 graph={graph}
                 id={`${key}-transition-${idx}`}
                 isVisible={true}

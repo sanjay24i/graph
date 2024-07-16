@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import Node from "./Node";
-import { IGraph, INode, Point, ShapeNodeStyle } from "yfiles";
+import { IArrow, IGraph, INode, Point, ShapeNodeStyle } from "yfiles";
+import Edge from "../Edge/Edge";
+import { arrowEdgeStyle } from "../Edge/edgeStyles";
 
 export const SIdleNode = ({
   graph,
@@ -14,37 +16,58 @@ export const SIdleNode = ({
 
   const startYPoint = 100;
   const startXPoint = 400;
-  const bend = 30;
+  const leftEdgeXPos = 25;
+  const bend = 20;
+  const nodeVDistance = 70;
 
   const data = {
     nodes: [
       {
-        id: "2",
-        label: "2",
+        id: "sIdleCornerNode",
+        label: "",
         isVisible: false,
-        position: { x: 25, y: startYPoint },
+        position: { x: leftEdgeXPos, y: startYPoint },
       },
-      { id: "3", label: "", isVisible: false, position: { x: 25, y: 500 } },
       {
-        id: "7",
-        label: "7",
+        id: "seconLastLeftNode",
+        label: "",
+        isVisible: false,
+        position: { x: leftEdgeXPos, y: 500 },
+      },
+      {
+        id: "lastLeftNode",
+        label: "",
+        isVisible: false,
+        position: { x: leftEdgeXPos, y: 700 },
+      },
+      {
+        id: "SIdleNode",
+        label: "SIdle",
         isVisible: true,
         position: { x: startXPoint, y: startYPoint + bend },
       },
       {
-        id: "8",
-        label: "8",
+        id: "middleEdgeSourceNode",
+        label: "",
         isVisible: false,
-        position: { x: 100, y: startYPoint + 100 },
+        position: { x: 100, y: startYPoint + nodeVDistance },
       },
       {
-        id: "9",
-        label: "9",
+        id: "middleEdgeTargetNode",
+        label: "",
         isVisible: false,
-        position: { x: 800, y: startYPoint + 100 },
+        position: { x: 800, y: startYPoint + nodeVDistance },
       },
     ],
-    edges: [{ source: "2", target: "3" }],
+    edges: [
+      {
+        source: "sIdleCornerNode",
+        target: "seconLastLeftNode",
+        sourceNodeArrow: IArrow.NONE,
+        targetNodeArrow: IArrow.NONE,
+      },
+      { source: "seconLastLeftNode", target: "lastLeftNode" },
+    ],
   };
 
   const handleNodeCreated = (node: INode, id: string) => {
@@ -53,7 +76,12 @@ export const SIdleNode = ({
 
   useEffect(() => {
     if (mopSize > 1) {
-      data.edges.push({ source: "8", target: "9" });
+      data.edges.push({
+        source: "middleEdgeSourceNode",
+        target: "middleEdgeTargetNode",
+        sourceNodeArrow: IArrow.NONE,
+        targetNodeArrow: IArrow.NONE,
+      });
     }
   }, [mopSize]);
 
@@ -63,14 +91,19 @@ export const SIdleNode = ({
       data.edges.forEach((edgeData) => {
         const sourceNode = nodeRefs.current[edgeData.source];
         const targetNode = nodeRefs.current[edgeData.target];
+        const style = arrowEdgeStyle(
+          edgeData?.sourceNodeArrow,
+          edgeData?.targetNodeArrow
+        );
+
         if (sourceNode && targetNode) {
-          graph.createEdge(sourceNode, targetNode);
+          graph.createEdge(sourceNode, targetNode, style);
         }
       });
 
       // Calculate the midpoint of the edge between node 8 and node 9
-      const node7 = nodeRefs.current["7"];
-      const node2 = nodeRefs.current["2"];
+      const SIdleNode = nodeRefs.current["SIdleNode"];
+      const sIdleCornerNode = nodeRefs.current["sIdleCornerNode"];
 
       // Create an invisible style
       const invisibleStyle = new ShapeNodeStyle({
@@ -79,32 +112,29 @@ export const SIdleNode = ({
         stroke: "none",
       });
 
-      const centerPointNode7 = new Point(
-        startXPoint + bend + 5,
-        startYPoint + 115
+      const centerPointSIdleNode = new Point(
+        startXPoint + 50,
+        startYPoint + nodeVDistance
       );
       const midpointNode = graph.createNodeAt({
-        location: centerPointNode7,
+        location: centerPointSIdleNode,
         tag: "Midpoint",
         style: invisibleStyle,
       });
 
-      graph.createEdge({
-        source: node7,
-        target: midpointNode,
-      });
+      graph.createEdge(SIdleNode, midpointNode);
 
-      if (node2 && node7) {
+      if (sIdleCornerNode && SIdleNode) {
         // Create an edge from node 2 to the top middle of node 7 with a bend
         const edge = graph.createEdge({
-          source: node2,
-          target: node7,
+          source: sIdleCornerNode,
+          target: SIdleNode,
         });
 
         // Adjust the bend position
         graph.addBend(
           edge,
-          new Point(node7.layout.center.x, node2.layout.center.y)
+          new Point(SIdleNode.layout.center.x, sIdleCornerNode.layout.center.y)
         );
 
         // Set the target arrow style (uncomment if needed)

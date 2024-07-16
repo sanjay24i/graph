@@ -12,3 +12,6 @@ export type NodeProps = {
     onNodeCreated: (node: INode, id: string) => void;
   };
 
+  export type NodeFactoryProps = {
+    type: "default" | "transition";
+  } & NodeProps;
