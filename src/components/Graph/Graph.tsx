@@ -94,6 +94,8 @@ const handleActionClick = (act:string) => {
   console.log('data...act', act)
 }
 
+console.log('yfiles reloading')
+
   return (
      isLoading && data?.nodes?.length > 1 ? <div>Loading...</div> :
     <><div

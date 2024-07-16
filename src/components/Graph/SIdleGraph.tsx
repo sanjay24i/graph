@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useMemo, useLayoutEffect } from 'react';
 import {
   GraphComponent,
@@ -39,8 +40,8 @@ const createGraphFromJson = (graph: IGraph, jsonData: any) => {
 
   // Create central node "SIdle"
   const centralNode = createNodeAt(graph, jsonData.Start, new Point(centerX, topY));
-  const centralNodeLeft = createNodeAt(graph, jsonData.Start, new Point(0, topY+50));
-  const centralNodeRight = createNodeAt(graph, jsonData.Start, new Point(800, topY));
+ // const centralNodeLeft = createNodeAt(graph, jsonData.Start, new Point(0, topY+50));
+ // const centralNodeRight = createNodeAt(graph, jsonData.Start, new Point(800, topY));
 
   // Create nodes from Mop array and connect them
   const mopNodes: Record<string, INode> = {};

@@ -1,13 +1,13 @@
-
-import './App.css'
-import { Graph } from './components/Graph/Graph'
+import "./App.css";
+// import { Graph } from "./components/Graph/Graph";
+import SIdleGraph from "./components/SIdleGraph/SIdleGraph";
 
 function App() {
   return (
     <div className="app">
-      <Graph />
+      <SIdleGraph />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
