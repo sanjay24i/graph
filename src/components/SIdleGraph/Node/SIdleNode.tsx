@@ -17,8 +17,8 @@ export const SIdleNode = ({
   const startYPoint = 100;
   const startXPoint = 400;
   const leftEdgeXPos = 25;
-  const bend = 20;
-  const nodeVDistance = 70;
+  const bend = 30;
+  const nodeVDistance = 100;
 
   const data = {
     nodes: [
@@ -113,8 +113,8 @@ export const SIdleNode = ({
       });
 
       const centerPointSIdleNode = new Point(
-        startXPoint + 50,
-        startYPoint + nodeVDistance
+        startXPoint + bend + 5,
+        startYPoint + 115
       );
       const midpointNode = graph.createNodeAt({
         location: centerPointSIdleNode,
